@@ -6,6 +6,7 @@ import sk.bacigala.hikeplanner.Database;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Map;
 
@@ -79,6 +80,49 @@ public class PeakController {
         }
 
         return result;
+    }
+
+    @CrossOrigin
+    @PostMapping("/create")
+    public String create(@RequestBody Map<String, String> peakInfo) {
+        // check incoming peakInfo
+        if (!peakInfo.containsKey("name"))
+            return "FAIL";
+        if (!peakInfo.containsKey("height"))
+            return "FAIL";
+        if (!peakInfo.containsKey("latitude"))
+            return "FAIL";
+        if (!peakInfo.containsKey("longitude"))
+            return "FAIL";
+
+        int key;
+
+        try {
+            Connection connection = Database.connect();
+
+            String statement = "INSERT INTO peak (name, height, latitude, longitude) VALUES (?,?,?,?)";
+            PreparedStatement preparedStatement = connection.prepareStatement(statement, Statement.RETURN_GENERATED_KEYS);
+
+            int parameterCount = 0;
+            preparedStatement.setString(++parameterCount, peakInfo.get("name"));
+            preparedStatement.setLong(++parameterCount, Integer.parseInt(peakInfo.get("height")));
+            preparedStatement.setString(++parameterCount, peakInfo.get("latitude"));
+            preparedStatement.setString(++parameterCount, peakInfo.get("longitude"));
+
+            preparedStatement.executeUpdate();
+
+            ResultSet resultSet = preparedStatement.getGeneratedKeys();
+            resultSet.next();
+            key = resultSet.getInt(1);
+
+            resultSet.close();
+            preparedStatement.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "FAIL";
+        }
+
+        return Integer.toString(key);
     }
 
 }

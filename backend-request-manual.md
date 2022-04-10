@@ -4,6 +4,7 @@ How to use backend API :wink:
 ## Contents
 - [**PEAK**](#peak)
 	- [search](#peak-search)
+	- [creation](#peak-creation)
 
 
 ## Peak
@@ -39,4 +40,22 @@ How to use backend API :wink:
 	  ...
 	  
 	]
+
+### Peak creation
+- **request**: POST to `/api/peak/create`
+	```
+	{
+	  "name" : "Highest mountain ever",
+	  "height" : 20000,
+	  "latitude" : "20:20:20",
+	  "longitude" : "30:30:30",
+	}
+	```
+- **response on success**: TEXT
+	```
+	integer - id of the newly created peak
+	```
+- **response on failure**: TEXT
+	```
+	FAIL
 	```
