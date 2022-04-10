@@ -5,6 +5,8 @@ How to use backend API :wink:
 - [**PEAK**](#peak)
 	- [search](#peak-search)
 	- [creation](#peak-creation)
+- [**HIKE**](#hike)
+	- [search](#hike-search)
 
 
 ## Peak
@@ -40,6 +42,7 @@ How to use backend API :wink:
 	  ...
 	  
 	]
+	```
 
 ### Peak creation
 - **request**: POST to `/api/peak/create`
@@ -58,4 +61,40 @@ How to use backend API :wink:
 - **response on failure**: TEXT
 	```
 	FAIL
+	```
+
+## Hike
+
+### Hike search
+- **request**: POST to `/api/hike/search`
+	```
+	{
+	  "id" : 1,                   // optional - response will contail at most 1 hike
+	  "nameSearch" : "omnic",     // optional - search for substring in hike name
+	  "minDate" : "2022-01-30",   // optional
+	  "maxDate" : "2022-02-29",   // optional
+	  "minDifficulty" : 0,        // optional     
+	  "maxDifficulty" : 10,       // optional
+	  "authorId" : 1,             // optional
+	  "peakId" : 1                // optional
+	}
+	```
+- **response**: JSON array of objects - hikes
+	```
+	[
+	  {
+	    "id" : 1,
+	    "peak_id" : 2.
+	    "difficulty" : 5,
+	    "author_id" : 1,
+	    "name" : "Name of the hike",
+		"date" : "2022-01-30"
+	  },
+	  {
+	    ...
+	  },
+	  
+	  ...
+	  
+	]
 	```
