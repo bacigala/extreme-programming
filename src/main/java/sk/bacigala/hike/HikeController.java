@@ -174,4 +174,24 @@ public class HikeController {
         return Integer.toString(key);
     }
 
+    @CrossOrigin
+    @PostMapping("/delete")
+    public String delete(@RequestBody Map<String, String> hikeInfo) {
+        if (!hikeInfo.containsKey("id"))
+            return "FAIL";
+
+        try {
+            Connection connection = Database.connect();
+            String statement = "DELETE FROM hike WHERE id = ?";
+            PreparedStatement preparedStatement = connection.prepareStatement(statement);
+            preparedStatement.setLong(1, Integer.parseInt(hikeInfo.get("id")));
+            int affectedRows = preparedStatement.executeUpdate();
+            preparedStatement.close();
+            return affectedRows > 0 ? "OK" : "FAIL";
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "FAIL";
+        }
+    }
+
 }
