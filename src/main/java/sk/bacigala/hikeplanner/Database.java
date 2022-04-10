@@ -8,7 +8,7 @@ import java.sql.SQLException;
 
 public class Database {
 
-    private static String getEnviromentVariable(String name) {
+    private static String getEnvironmentVariable(String name) {
         if (name == null || name.isEmpty())
             return null;
 
@@ -18,14 +18,14 @@ public class Database {
 
     public static Connection connect() throws SQLException {
         String url = "jdbc:postgresql://" +
-                getEnviromentVariable("DB_HOST") +
+                getEnvironmentVariable("DB_HOST") +
                 ":" +
-                getEnviromentVariable("DB_PORT") +
+                getEnvironmentVariable("DB_PORT") +
                 "/" +
-                getEnviromentVariable("DB_NAME");
+                getEnvironmentVariable("DB_NAME");
 
-        String username = getEnviromentVariable("DB_USER");
-        String password = getEnviromentVariable("DB_PASSWORD");
+        String username = getEnvironmentVariable("DB_USER");
+        String password = getEnvironmentVariable("DB_PASSWORD");
 
         return DriverManager.getConnection(url, username, password);
     }
