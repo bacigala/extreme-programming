@@ -30,3 +30,6 @@ build/
 
 ### VS Code ###
 .vscode/
+
+# configuration of enviroment variables (e.g. DB connection details)
+.env
