@@ -3,10 +3,7 @@ package sk.bacigala.hike;
 import org.springframework.web.bind.annotation.*;
 import sk.bacigala.hikeplanner.Database;
 
-import java.sql.Connection;
-import java.sql.Date;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.Map;
 
@@ -129,6 +126,52 @@ public class HikeController {
         }
 
         return "OK";
+    }
+
+    @CrossOrigin
+    @PostMapping("/create")
+    public String create(@RequestBody Map<String, String> hikeInfo) {
+        // check incoming hikeInfo
+        if (!hikeInfo.containsKey("name"))
+            return "FAIL";
+        if (!hikeInfo.containsKey("date"))
+            return "FAIL";
+        if (!hikeInfo.containsKey("peak_id"))
+            return "FAIL";
+        if (!hikeInfo.containsKey("difficulty"))
+            return "FAIL";
+        if (!hikeInfo.containsKey("author_id"))
+            return "FAIL";
+
+        int key;
+
+        try {
+            Connection connection = Database.connect();
+
+            String statement = "INSERT INTO hike (name, date, peak_id, difficulty, author_id) VALUES (?,?,?,?,?)";
+            PreparedStatement preparedStatement = connection.prepareStatement(statement, Statement.RETURN_GENERATED_KEYS);
+
+            int parameterCount = 0;
+            preparedStatement.setString(++parameterCount, hikeInfo.get("name"));
+            preparedStatement.setDate(++parameterCount, Date.valueOf(hikeInfo.get("date")));
+            preparedStatement.setLong(++parameterCount, Integer.parseInt(hikeInfo.get("peak_id")));
+            preparedStatement.setLong(++parameterCount, Integer.parseInt(hikeInfo.get("difficulty")));
+            preparedStatement.setLong(++parameterCount, Integer.parseInt(hikeInfo.get("author_id")));
+
+            preparedStatement.executeUpdate();
+
+            ResultSet resultSet = preparedStatement.getGeneratedKeys();
+            resultSet.next();
+            key = resultSet.getInt(1);
+
+            resultSet.close();
+            preparedStatement.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "FAIL";
+        }
+
+        return Integer.toString(key);
     }
 
 }
