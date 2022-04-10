@@ -16,7 +16,7 @@ public class HikeController {
 
     @CrossOrigin
     @PostMapping("/search")
-    public ArrayList<Hike> get(@RequestBody Map<String, String> payload) {
+    public ArrayList<Hike> search(@RequestBody Map<String, String> payload) {
         ArrayList<Hike> result = new ArrayList<>();
         try {
             Connection connection = Database.connect();
@@ -81,6 +81,54 @@ public class HikeController {
         }
 
         return result;
+    }
+
+    @CrossOrigin
+    @PostMapping("/modify")
+    public String modify(@RequestBody Map<String, String> payload) {
+        if (!payload.containsKey("id"))
+            return "FAIL - no id specified";
+
+        try {
+            Connection connection = Database.connect();
+            StringBuilder statementBuilder = new StringBuilder();
+            statementBuilder.append("UPDATE hike SET ");
+            if (payload.containsKey("name"))
+                statementBuilder.append(" name = ?,");
+            if (payload.containsKey("date"))
+                statementBuilder.append(" date = ?,");
+            if (payload.containsKey("peak_id"))
+                statementBuilder.append(" peak_id  = ?,");
+            if (payload.containsKey("difficulty"))
+                statementBuilder.append(" difficulty = ?,");
+            if (payload.containsKey("author_id"))
+                statementBuilder.append(" author_id = ?,");
+            statementBuilder.deleteCharAt(statementBuilder.length()-1);
+            statementBuilder.append(" WHERE id = ?");
+
+            PreparedStatement preparedStatement = connection.prepareStatement(statementBuilder.toString());
+
+            int parameterCount = 0;
+            if (payload.containsKey("name"))
+                preparedStatement.setString(++parameterCount, payload.get("name"));
+            if (payload.containsKey("date"))
+                preparedStatement.setDate(++parameterCount, Date.valueOf(payload.get("date")));
+            if (payload.containsKey("peak_id"))
+                preparedStatement.setLong(++parameterCount, Integer.parseInt(payload.get("peak_id")));
+            if (payload.containsKey("difficulty"))
+                preparedStatement.setLong(++parameterCount, Integer.parseInt(payload.get("difficulty")));
+            if (payload.containsKey("author_id"))
+                preparedStatement.setLong(++parameterCount, Integer.parseInt(payload.get("author_id")));
+            preparedStatement.setLong(++parameterCount, Integer.parseInt(payload.get("id")));
+
+            preparedStatement.executeUpdate();
+            preparedStatement.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "FAIL";
+        }
+
+        return "OK";
     }
 
 }

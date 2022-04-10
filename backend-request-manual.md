@@ -7,6 +7,7 @@ How to use backend API :wink:
 	- [creation](#peak-creation)
 - [**HIKE**](#hike)
 	- [search](#hike-search)
+	- [modification](#hike-modification)
 
 
 ## Peak
@@ -97,4 +98,25 @@ How to use backend API :wink:
 	  ...
 	  
 	]
+	```
+
+### Hike modification
+- **request**: POST to `/api/hike/modify`
+	```
+	{
+	  "id" : 2,                 // required
+	  "name" : "modified name", // optional
+	  "date" : "2022-03-03",    // optional
+	  "peak_id" : 3,            // optional
+	  "difficulty" : 3,         // optional
+	  "author_id" : 3           // optional
+	}
+	```
+- **response on success**: TEXT
+	```
+	OK
+	```
+- **response on failure**: TEXT
+	```
+	FAIL
 	```
