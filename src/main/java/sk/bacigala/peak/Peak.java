@@ -1,36 +1,21 @@
 package sk.bacigala.peak;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Entity
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class Peak {
 
-    private final long id, height;
-    private final String name, latitude, longitude;
-
-    public Peak(long id, String name, long height, String latitude, String longitude) {
-        this.id = id;
-        this.name = name;
-        this.height = height;
-        this.latitude = latitude;
-        this.longitude = longitude;
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public long getHeight() {
-        return height;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getLatitude() {
-        return latitude;
-    }
-
-    public String getLongitude() {
-        return longitude;
-    }
+    @Id
+    //@GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+    private long height;
+    private String name, latitude, longitude;
 
 }

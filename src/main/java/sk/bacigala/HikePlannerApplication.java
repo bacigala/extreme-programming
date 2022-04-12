@@ -1,9 +1,9 @@
-package sk.bacigala.hikeplanner;
+package sk.bacigala;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-@SpringBootApplication(scanBasePackages={"sk.bacigala"})
+@SpringBootApplication
 public class HikePlannerApplication {
 
 	public static void main(String[] args) {
