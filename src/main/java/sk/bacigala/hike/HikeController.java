@@ -61,7 +61,7 @@ public class HikeController {
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 result.add(new Hike(
-                        resultSet.getLong("id"),
+                        resultSet.getInt("id"),
                         resultSet.getLong("peak_id"),
                         resultSet.getLong("difficulty"),
                         resultSet.getLong("author_id"),

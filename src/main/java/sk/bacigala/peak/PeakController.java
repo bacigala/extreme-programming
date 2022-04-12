@@ -1,5 +1,6 @@
 package sk.bacigala.peak;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import sk.bacigala.hikeplanner.Database;
 
@@ -13,6 +14,14 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/peak")
 public class PeakController {
+
+    @Autowired
+    private PeakJpaRepository peakJpaRepository;
+
+    @GetMapping("{id}")
+    public String getPeak(@PathVariable("id") String id) {
+        return peakJpaRepository.getById(Integer.parseInt(id)).getName();
+    }
 
     @CrossOrigin
     @PostMapping("/search")
@@ -65,8 +74,8 @@ public class PeakController {
             while (resultSet.next()) {
                 result.add(new Peak(
                         resultSet.getInt("id"),
-                        resultSet.getString("name"),
                         resultSet.getLong("height"),
+                        resultSet.getString("name"),
                         resultSet.getString("latitude"),
                         resultSet.getString("longitude")
                 ));
